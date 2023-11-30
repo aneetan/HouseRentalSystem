@@ -625,6 +625,13 @@
         inputControl.classList.remove('error');
     }
 
+    //email validation
+    //email validation
+    // const isValidEmail = email => {
+    //     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //     return re.test(String(email).toLowerCase());
+    // }
+
     //password verification
     //check for strong password
     const isValidPassword = passwordInput => {
@@ -651,6 +658,17 @@
         } else {
             setSuccess(name);
         }
+
+        // //check email validation
+        // if(emailValue === '') {
+        //     setError(email, 'Email is required');
+        //     isValid=false;
+        // } else if(!isValidEmail(emailValue)) {
+        //     setError(email, 'Insert valid email address');
+        //     isValid=false;
+        // } else {
+        //     setSuccess(email);
+        // }
 
         //check phone validation
         if(phoneNo === '') {

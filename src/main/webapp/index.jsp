@@ -479,7 +479,7 @@
                 <div class="input-field">
                     <i class="fas fa-phone"></i>
 
-                    <input type="text" name="phoneLogin" placeholder="Phone number"/>
+                    <input type="text" name="emailLogin" placeholder="Email"/>
 
                 </div>
                 <div class="input-field">
@@ -503,17 +503,15 @@
                     <i class="fas fa-user"></i>
                     <input type="text" name="userName" id="userName" placeholder="Full Name"/>
                     <div class="error"></div>
-
-
                 </div>
+
                 <div class="input-field">
                     <i class="fas fa-phone"></i>
 
-                    <input type="text" name="phone" id="phone" placeholder="Phone number"/>
+                    <input type="text" name="email" id="email" placeholder="Email"/>
                     <div class="error"></div>
-
-
                 </div>
+
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
                     <input type="password" name="password" class="passwordSignup" placeholder="Password" id="passwordInput"/>
@@ -590,7 +588,7 @@
 
 
     // Form validation and verification
-    const phone = document.getElementById("phone");
+    const email = document.getElementById("email");
     const form1 = document.getElementById("SignUp");
     const name = document.getElementById("userName");
     const form2 = document.getElementById("LogIn");
@@ -627,10 +625,10 @@
 
     //email validation
     //email validation
-    // const isValidEmail = email => {
-    //     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     return re.test(String(email).toLowerCase());
-    // }
+    const isValidEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
 
     //password verification
     //check for strong password
@@ -640,13 +638,13 @@
     }
 
     //phone number verification
-    function isValidPhoneNumber(phone) {
-        // Check if the input is a numeric string and has a length of 10
-        return /^\d{10}$/.test(phone);
-    }
+    // function isValidPhoneNumber(phone) {
+    //     // Check if the input is a numeric string and has a length of 10
+    //     return /^\d{10}$/.test(phone);
+    // }
 
     const validateInputs = () => {
-        const phoneNo = phone.value;
+        const emailValue = email.value.trim();
         const fullName = name.value;
         const passwordValue = passwordInput.value.trim();
         // const confirmpwValue = confirmpw.value.trim();
@@ -660,26 +658,26 @@
         }
 
         // //check email validation
-        // if(emailValue === '') {
-        //     setError(email, 'Email is required');
-        //     isValid=false;
-        // } else if(!isValidEmail(emailValue)) {
-        //     setError(email, 'Insert valid email address');
-        //     isValid=false;
-        // } else {
-        //     setSuccess(email);
-        // }
-
-        //check phone validation
-        if(phoneNo === '') {
-            setError(phone, 'Contact is required');
+        if(emailValue === '') {
+            setError(email, 'Email is required');
             isValid=false;
-        } else if(!isValidPhoneNumber(phoneNo)) {
-            setError(phone, 'Insert valid contact');
+        } else if(!isValidEmail(emailValue)) {
+            setError(email, 'Insert valid email address');
             isValid=false;
         } else {
-            setSuccess(phone);
+            setSuccess(email);
         }
+
+        //check phone validation
+        // if(phoneNo === '') {
+        //     setError(phone, 'Contact is required');
+        //     isValid=false;
+        // } else if(!isValidPhoneNumber(phoneNo)) {
+        //     setError(phone, 'Insert valid contact');
+        //     isValid=false;
+        // } else {
+        //     setSuccess(phone);
+        // }
 
         //check password validation
         if(passwordValue === '') {

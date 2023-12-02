@@ -11,12 +11,12 @@ public class RentalService {
 
     //Saving details for registration form and registering user
     public void authorizeUser(HouseRental rental) {
-        String query = "INSERT INTO user(name, phone, password)" + "values(?,?,?)";
+        String query = "INSERT INTO user(name, email, password)" + "values(?,?,?)";
         PreparedStatement preparedStatement = new DBConnection().getStatement(query);
 
         try {
             preparedStatement.setString(1, rental.getName());
-            preparedStatement.setString(2, rental.getPhone());
+            preparedStatement.setString(2, rental.getEmail());
             preparedStatement.setString(3, rental.getPassword());
 
             preparedStatement.executeUpdate();
@@ -26,13 +26,13 @@ public class RentalService {
     }
 
     //helps to login the user by checking database
-    public HouseRental loginUser(String phone, String password){
-        String query= "select * from user where phone=? and password=?";
+    public HouseRental loginUser(String email, String password){
+        String query= "select * from user where email=? and password=?";
         PreparedStatement preparedStatement= new DBConnection().getStatement(query);
         HouseRental houseRental= null;
 
         try{
-            preparedStatement.setString(1,phone);
+            preparedStatement.setString(1,email);
             preparedStatement.setString(2,password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -41,7 +41,7 @@ public class RentalService {
                 houseRental = new HouseRental();
 
                 houseRental.setId(resultSet.getInt("id"));
-                houseRental.setPhone(resultSet.getString("phone"));
+                houseRental.setEmail(resultSet.getString("email"));
                 houseRental.setPassword(resultSet.getString("password"));
             }
         } catch (SQLException e){

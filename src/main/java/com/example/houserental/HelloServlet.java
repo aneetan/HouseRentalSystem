@@ -36,7 +36,7 @@ public class HelloServlet extends HttpServlet {
             HouseRental rental = new HouseRental();
 
             rental.setName(request.getParameter("userName"));
-            rental.setPhone(request.getParameter("phone"));
+            rental.setEmail(request.getParameter("email"));
             rental.setPassword(PasswordHashing.hashPassword(request.getParameter("password")));
 
             request.getSession().setAttribute("rental", rental);
@@ -48,17 +48,17 @@ public class HelloServlet extends HttpServlet {
 
         //for login of user using result set from database
         if (page.equalsIgnoreCase("loginUser")) {
-            String phone = request.getParameter("phoneLogin");
+            String email = request.getParameter("emailLogin");
             String password = PasswordHashing.hashPassword(request.getParameter("passwordLogin"));
 
             //User Login
-            HouseRental rental = new RentalService().loginUser(phone, password);
+            HouseRental rental = new RentalService().loginUser(email, password);
 
             if (rental != null){
                 int id = rental.getId();
-                HttpSession session = request.getSession();
+                HttpSession session = request.getSession(true);
 
-                session.setAttribute("phone", phone);
+                session.setAttribute("email", email);
                 session.setAttribute("id", id);
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("landing.jsp");

@@ -39,7 +39,9 @@ public class HelloServlet extends HttpServlet {
             rental.setEmail(request.getParameter("email"));
             rental.setPassword(PasswordHashing.hashPassword(request.getParameter("password")));
 
+//            request.getSession().setAttribute("rental", rental);
             request.getSession().setAttribute("rental", rental);
+
             new RentalService().authorizeUser(rental);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("landing.jsp");
@@ -56,10 +58,17 @@ public class HelloServlet extends HttpServlet {
 
             if (rental != null){
                 int id = rental.getId();
+
+                //if authentication is successful create session
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute("email", email);
                 session.setAttribute("id", id);
+
+                // Create a cookie for the username
+                Cookie cookie = new Cookie("email", email);
+                cookie.setMaxAge(30 * 24 * 60 * 60); // Set the cookie to expire in 30 days
+                response.addCookie(cookie);
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("landing.jsp");
                 requestDispatcher.forward(request, response);
@@ -69,6 +78,17 @@ public class HelloServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
                 requestDispatcher.forward(request, response);
             }
+        }
+
+        if (page.equalsIgnoreCase("forgotPw")){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("forgotPw.jsp");
+            requestDispatcher.forward(request, response);
+        }
+
+
+        if (page.equalsIgnoreCase("terms")){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("terms.jsp");
+            requestDispatcher.forward(request, response);
         }
 
 

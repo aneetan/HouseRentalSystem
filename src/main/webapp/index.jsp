@@ -3,6 +3,11 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
+    <script
+            src="https://kit.fontawesome.com/64d58efce2.js"
+            crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-GLhlTQ8iBZ1+eaNdTOq8C6Zy5PzU2FhH8dQzFqLQxSQqmeMvq2GAgGgbDAA & # 47; 72FayeaRqYl5K7l" crossorigin="anonymous">
 
 <%--    CSS of the login/signup page--%>
     <style>
@@ -397,12 +402,12 @@
             position: relative;
         }
 
-        .input-field .error{
-            color: #ff3860;
-            font-size: 12px;
-            height: 13px;
-            width: 400px;
-        }
+        /*.input-field .error{*/
+        /*    color: #ff3860;*/
+        /*    font-size: 12px;*/
+        /*    height: 13px;*/
+        /*    width: 400px;*/
+        /*}*/
 
         .forgot-password-container {
             position: absolute;
@@ -477,7 +482,7 @@
 
 
                 <div class="input-field">
-                    <i class="fas fa-phone"></i>
+                    <i class="fas fa-envelope"></i>
 
                     <input type="text" name="emailLogin" placeholder="Email"/>
 
@@ -488,9 +493,11 @@
                     <i class="fas fa-eye" id="togglePasswordLogin"></i>
                     <div class="forgot-password-container">
 
-                        <a href="./forgot.html" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
+                        <a href="rental?page=forgotPw" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
                     </div>
                 </div>
+
+<%--                <input type="checkbox" name="rememberMe" /> Remember Me--%>
 
                 <input type="submit" value="Login" class="btn solid" />
 
@@ -502,25 +509,45 @@
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="text" name="userName" id="userName" placeholder="Full Name"/>
+                    <i class="fas fa"></i>
+
                     <div class="error"></div>
                 </div>
 
                 <div class="input-field">
-                    <i class="fas fa-phone"></i>
-
+                    <i class="fas fa-envelope"></i>
                     <input type="text" name="email" id="email" placeholder="Email"/>
+                    <i class="fas fa"></i>
+
                     <div class="error"></div>
                 </div>
 
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="password" class="passwordSignup" placeholder="Password" id="passwordInput"/>
+                    <input type="password" class="passwordSignup" placeholder="Password" id="passwordInput"/>
                     <i class="fas fa-eye" id="togglePassword"></i>
                     <div class="error"></div>
 
                 </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Confirm Password" id="passwordInputConfirm"  />
+                    <i class="fas fa-eye" id="togglePasswordConfirm"></i>
+
+                    <div class="error" style="color: #ff3860;"></div>
+
+                </div>
 <%--                <input type="submit" class="btn" value="Sign up" />--%>
                 <input type="submit" name="registerSubmit" class="btn" value="Sign up">
+
+                <p style="width: 29.375rem; color: #2F4E7E; height: 3.4375rem; margin-left: 80px; flex-shrink: 0;">
+                    By clicking Sign up, you agree our
+                    <a href="rental?page=terms"> Terms and Conditions </a> .
+
+
+                </p>
+<%--                <input type="submit" class="btn" value="Sign up" />--%>
 
 
             </form>
@@ -555,20 +582,33 @@
     </div>
 </div>
 
-
 <script>
-
-
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordInputConfirm = document.getElementById("passwordInputConfirm");
 
     document.addEventListener("DOMContentLoaded", function () {
-        const passwordInput = document.getElementById("passwordInput");
         const togglePassword = document.getElementById("togglePassword");
+        const passwordInputLogin = document.getElementById("passwordInputLogin");
+        const togglePasswordLogin = document.getElementById("togglePasswordLogin");
+        const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
+
+        function togglePasswordVisibility(inputElement, iconElement) {
+            const type = inputElement.getAttribute("type") === "password" ? "text" : "password";
+            inputElement.setAttribute("type", type);
+            // Toggle the eye icon based on the password visibility
+            iconElement.classList.toggle("fa-eye-slash");
+        }
 
         togglePassword.addEventListener("click", function () {
-            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-            passwordInput.setAttribute("type", type);
-            // Toggle the eye icon based on the password visibility
-            this.classList.toggle("fa-eye-slash");
+            togglePasswordVisibility(passwordInput, this);
+        });
+
+        togglePasswordLogin.addEventListener("click", function () {
+            togglePasswordVisibility(passwordInputLogin, this);
+        });
+
+        togglePasswordConfirm.addEventListener("click", function () {
+            togglePasswordVisibility(passwordInputConfirm, this); // Assuming the same input for confirmation
         });
 
         const sign_in_btn = document.querySelector("#sign-in-btn");
@@ -647,7 +687,7 @@
         const emailValue = email.value.trim();
         const fullName = name.value;
         const passwordValue = passwordInput.value.trim();
-        // const confirmpwValue = confirmpw.value.trim();
+        const confirmPwValue = passwordInputConfirm.value.trim();
         let isValid = true;
 
         //check name validation
@@ -693,16 +733,16 @@
             setSuccess(passwordInput);
         }
 
-        //check for matching password
-        // if(confirmpwValue === '') {
-        //     setError(confirmpw, 'Please confirm your password');
-        //     isValid=false;
-        // } else if(confirmpwValue !== passwordValue) {
-        //     setError(confirmpw, "Password doesn't match");
-        //     isValid=false;
-        // } else {
-        //     setSuccess(confirmpw);
-        // }
+        // check for matching password
+        if(confirmPwValue === '') {
+            setError(passwordInputConfirm, 'Please confirm your password');
+            isValid=false;
+        } else if(confirmPwValue !== passwordValue) {
+            setError(passwordInputConfirm, "Password doesn't match");
+            isValid=false;
+        } else {
+            setSuccess(passwordInputConfirm);
+        }
         return isValid;
     }
 

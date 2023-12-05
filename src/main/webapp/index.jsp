@@ -480,6 +480,9 @@
                 <div class="error" style="color: #ff3860;" id="error-message"><%= request.getAttribute("errorMessage") %></div>
                 <% } %>
 
+                <% if (request.getAttribute("successPassword") != null) { %>
+                <div class="success" style="color: green;" id="success-message"><%= request.getAttribute("successPassword") %></div>
+                <% } %>
 
                 <div class="input-field">
                     <i class="fas fa-envelope"></i>

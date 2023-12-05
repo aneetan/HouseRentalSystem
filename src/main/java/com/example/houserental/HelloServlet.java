@@ -5,8 +5,14 @@ import Model.HouseRental;
 import Service.RentalService;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -44,7 +50,7 @@ public class HelloServlet extends HttpServlet {
 
             new RentalService().authorizeUser(rental);
 
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("landing.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
             requestDispatcher.forward(request, response);
         }
 
@@ -80,15 +86,139 @@ public class HelloServlet extends HttpServlet {
             }
         }
 
-        if (page.equalsIgnoreCase("forgotPw")){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("forgotPw.jsp");
+        if (page.equalsIgnoreCase("forgotPw")) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("forgot.jsp");
             requestDispatcher.forward(request, response);
         }
 
 
-        if (page.equalsIgnoreCase("terms")){
+        if (page.equalsIgnoreCase("terms")) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("terms.jsp");
             requestDispatcher.forward(request, response);
+        }
+
+
+        //For Forgot password which is in login page
+        if (page.equals("forgot")) {
+
+            String email = request.getParameter("email");
+            RequestDispatcher dispatcher = null;
+            int otpvalue = 0;
+
+            HttpSession mySession = request.getSession();
+            mySession.setAttribute(email, "email");
+
+            try {
+                if (email != null && new RentalService().isEmailExists(email) == true) {
+                    // sending otp
+                    Random rand = new Random();
+                    otpvalue = rand.nextInt(1255650);
+
+                    String to = email;// change accordingly
+                    // Get the session object
+                    Properties props = new Properties();
+                    props.put("mail.smtp.host", "smtp.gmail.com");
+                    props.put("mail.smtp.socketFactory.port", "465");
+                    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.port", "465");
+                    Session session = Session.getDefaultInstance(props, new Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication("rentmatic18@gmail.com", "ipotqmktdoltoxtw");// Put your email
+                            // id and
+                            // password here
+                        }
+                    });
+
+                    // compose message
+                    try {
+                        MimeMessage message = new MimeMessage(session);
+                        message.setFrom(new InternetAddress(email));// change accordingly
+                        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                        message.setSubject("Hello");
+                        message.setText("your OTP is: " + otpvalue);
+                        // send message
+                        Transport.send(message);
+                        System.out.println("message sent successfully");
+                    } catch (MessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+                    dispatcher = request.getRequestDispatcher("otp.jsp");
+                    request.setAttribute("message1", "OTP is sent to your email id");
+                    //request.setAttribute("connection", con);
+                    mySession.setAttribute("otp", otpvalue);
+                    mySession.setAttribute("email", email);
+                    dispatcher.forward(request, response);
+                    //request.setAttribute("status", "success");
+                } else {
+                    request.setAttribute("errorMessage1", "Email address not found!");
+
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("forgot.jsp");
+                    requestDispatcher.forward(request, response);
+
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+
+//        //resend OTP
+//        if (page.equalsIgnoreCase("resend")){
+//            RequestDispatcher requestDispatcher = request.getRequestDispatcher("otp.jsp");
+//            requestDispatcher.forward(request, response);
+//        }
+
+        if (page.equalsIgnoreCase("verifyOtp")) {
+
+            int value = Integer.parseInt(request.getParameter("otp"));
+            HttpSession session = request.getSession();
+            int otp = (int) session.getAttribute("otp");
+
+
+            RequestDispatcher dispatcher = null;
+
+
+            if (value == otp) {
+
+                request.setAttribute("email", request.getParameter("email"));
+                request.setAttribute("status", "success");
+                dispatcher = request.getRequestDispatcher("newPassword.jsp");
+                dispatcher.forward(request, response);
+
+            } else {
+                request.setAttribute("message", "Invalid verification. Re-enter OTP");
+
+                dispatcher = request.getRequestDispatcher("otp.jsp");
+                dispatcher.forward(request, response);
+
+            }
+
+        }
+
+
+        if (page.equalsIgnoreCase("resetPassword")) {
+            HttpSession session = request.getSession();
+            String email = (String) session.getAttribute("email");
+
+            String password = PasswordHashing.hashPassword(request.getParameter("confirmPassword"));
+//            String confirmPassword = request.getParameter("confirmPassword");
+
+            RequestDispatcher dispatcher = null;
+
+            try {
+                new RentalService().resetPassword(email, password);
+                request.setAttribute("status", "resetSuccess");
+                request.setAttribute("successPassword", "Password changed!! Login new details");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                request.setAttribute("status", "resetFailed");
+            }
+            dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher.forward(request, response);
+
+
         }
 
 

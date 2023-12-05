@@ -49,4 +49,37 @@ public class RentalService {
         }
         return houseRental;
     }
+
+    //last phase of the forgot password which is used for resetting the old password into newpassword
+    public void resetPassword(String email, String password) throws SQLException {
+        String query = "UPDATE user SET password = ? WHERE email = ?";
+
+        PreparedStatement preparedStatement = new DBConnection().getStatement(query);
+
+        preparedStatement.setString(1, password);
+        preparedStatement.setString(2, email);
+
+        preparedStatement.executeUpdate();
+
+    }
+
+
+
+    // Check the email exists on the database or not ona boolean value
+    public boolean isEmailExists(String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM user WHERE email = ?";
+        int count = 0;
+
+        try (PreparedStatement preparedStatement = new DBConnection().getStatement(query)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt(1);
+                }
+            }
+        }
+
+        return count > 0;
+    }
 }

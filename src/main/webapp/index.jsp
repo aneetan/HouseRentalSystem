@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>RentoMatic</title>
     <script
             src="https://kit.fontawesome.com/64d58efce2.js"
             crossorigin="anonymous"

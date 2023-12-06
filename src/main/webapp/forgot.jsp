@@ -504,7 +504,7 @@
           <% } %>
           <input type="submit" value="Submit" class="btn solid" />
           <p class="back-link" id="#">
-            <a href="index.jsp">
+            <a href="index.jsp" style="text-decoration: none">
             <i class="fas fa-arrow-left"></i> Back
           </a>
         </form>

@@ -9,6 +9,9 @@
     ></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-GLhlTQ8iBZ1+eaNdTOq8C6Zy5PzU2FhH8dQzFqLQxSQqmeMvq2GAgGgbDAA & # 47; 72FayeaRqYl5K7l" crossorigin="anonymous">
 
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
 <%--    CSS of the login/signup page--%>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
@@ -493,7 +496,7 @@
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
                     <input type="password" name="passwordLogin" placeholder="Password" class="passwordLogin" id="passwordInputLogin"/>
-                    <i class="fas fa-eye" id="togglePasswordLogin"></i>
+                    <i class="fas fa-eye-slash" id="togglePasswordLogin"></i>
                     <div class="forgot-password-container">
 
                         <a href="rental?page=forgotPw" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
@@ -528,7 +531,7 @@
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
                     <input type="password" class="passwordSignup" placeholder="Password" id="passwordInput"/>
-                    <i class="fas fa-eye" id="togglePassword"></i>
+                    <i class="fas fa-eye-slash" id="togglePassword"></i>
                     <div class="error"></div>
 
                 </div>
@@ -536,7 +539,7 @@
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
                     <input type="password" name="password" placeholder="Confirm Password" id="passwordInputConfirm"  />
-                    <i class="fas fa-eye" id="togglePasswordConfirm"></i>
+                    <i class="fas fa-eye-slash" id="togglePasswordConfirm"></i>
 
                     <div class="error" style="color: #ff3860;"></div>
 
@@ -595,12 +598,22 @@
         const togglePasswordLogin = document.getElementById("togglePasswordLogin");
         const togglePasswordConfirm = document.getElementById("togglePasswordConfirm");
 
+        // function togglePasswordVisibility(inputElement, iconElement) {
+        //     const type = inputElement.getAttribute("type") === "password" ? "text" : "password";
+        //     inputElement.setAttribute("type", type);
+        //     // Toggle the eye icon based on the password visibility
+        //     iconElement.classList.toggle("fa-eye-slash");
+        // }
+
         function togglePasswordVisibility(inputElement, iconElement) {
             const type = inputElement.getAttribute("type") === "password" ? "text" : "password";
             inputElement.setAttribute("type", type);
+
             // Toggle the eye icon based on the password visibility
+            iconElement.classList.toggle("fa-eye");
             iconElement.classList.toggle("fa-eye-slash");
         }
+
 
         togglePassword.addEventListener("click", function () {
             togglePasswordVisibility(passwordInput, this);

@@ -499,18 +499,19 @@
       <div class="signin-signup">
         <!-- This is for new password creation -->
         <form action="rental?page=resetPassword"  method="post" class="new-password-form" id="newPasswordForm" onsubmit="return validatePassword()">
-          <h2 class="title">Create New Password</h2>
+          <h2 class="title">New Credentials</h2>
+          <p id="gyante">Create a new secure password</p>
           <div class="input-field">
             <i class="fas fa-lock"></i>
             <input type="password" name="password" id="newPassword" placeholder="New Password" />
-            <i class="fas fa-eye-slash" id="toggleNewPassword"></i>
+            <i class="fas fa-eye-slash" id="togglePassword"></i>
             <div style="color: red" class="error"></div>
           </div>
           <div class="input-field">
             <i class="fas fa-lock"></i>
             <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password"
                     />
-            <i class="fas fa-eye-slash" id="toggleConfirmPassword"></i>
+            <i class="fas fa-eye-slash" id="togglePasswordConfirm"></i>
             <div class="error"></div>
 
           </div>
@@ -519,8 +520,10 @@
 
           <!-- Added the back button for the new password form -->
           <p class="back-link" id="newPasswordFormBackBtn">
-            <i class="fas fa-arrow-left"></i> Back
-          </p>
+
+            <a href="forgot.jsp" style="text-decoration: none">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
         </form>
 
 
@@ -540,6 +543,31 @@
 
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleNewPassword = document.getElementById("togglePassword");
+      const toggleConfirmPassword = document.getElementById("togglePasswordConfirm");
+
+
+      const newPasswordInput = document.getElementById("newPassword");
+      const confirmPasswordInput = document.getElementById("confirmPassword");
+
+      function togglePasswordVisibility(inputElement, iconElement) {
+        const type = inputElement.getAttribute("type") === "password" ? "text" : "password";
+        inputElement.setAttribute("type", type);
+
+        // Toggle the eye icon based on the password visibility
+        iconElement.classList.toggle("fa-eye");
+        iconElement.classList.toggle("fa-eye-slash");
+      }
+
+      toggleNewPassword.addEventListener("click", function () {
+        togglePasswordVisibility(newPasswordInput, this);
+      });
+
+      toggleConfirmPassword.addEventListener("click", function () {
+        togglePasswordVisibility(confirmPasswordInput, this);
+      });
+    });
     const newPassword = document.getElementById("newPassword");
     const confirmPw = document.getElementById("confirmPassword");
 

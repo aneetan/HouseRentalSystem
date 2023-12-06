@@ -493,10 +493,11 @@
         <!-- This is for OTP -->
 
         <form action="rental?page=verifyOtp" method="post" name="OtpForm" class="otp-form" id="otpForm" >
-          <h2 class="title">Enter OTP</h2>
+          <h2 class="title">Verification</h2>
+          <p id="gyante">Please enter the OTP that we just sent you.</p>
           <div class="input-field">
             <i class="fas fa-key"></i>
-            <input type="text" name="otp" id="otp" placeholder="Enter OTP" required />
+            <input type="text" name="otp" id="otp" placeholder="OTP" required />
           </div>
           <%--                display error message if username or password is incorrect--%>
           <% if (request.getAttribute("message") != null) { %>
@@ -512,7 +513,10 @@
 
           <br>
           <p class="back-link" id="otpFormBackBtn">
-            <i class="fas fa-arrow-left"></i> Back
+
+            <a href="forgot.jsp" style="text-decoration: none">
+              <i class="fas fa-arrow-left"></i> Back
+            </a>
 
         </form>
 
